@@ -1,0 +1,126 @@
+BEGIN:VCALENDAR
+PRODID:-//Microsoft Corporation//Outlook 16.0 MIMEDIR//EN
+VERSION:2.0
+METHOD:PUBLISH
+X-MS-OLK-FORCEINSPECTOROPEN:TRUE
+BEGIN:VTIMEZONE
+TZID:SE Asia Standard Time
+BEGIN:STANDARD
+DTSTART:16010101T000000
+TZOFFSETFROM:+0700
+TZOFFSETTO:+0700
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+CLASS:PUBLIC
+CREATED:20250720T154636Z
+DESCRIPTION:\n\nBoundless collaboration starts with the right strategy!\nDi
+	scover strategies for building effective virtual collaboration at the ICE 
+	Institute Webinar Series: The 34th Cyber ​​Education Forum on "Boundle
+	ss Collaboration: Effective Strategies for Collaborative Virtual Learning"
+	 \n\nThursday\, July 24\, 2025\n10:00 AM WIB (Jakarta Time/UTC+7)\n\nSpeak
+	er:\n👩🏼‍💼Ivy Shi\nFounder of Learnmonade\,\nLearnmonade (
+	Hong Kong)\n\n👨🏻‍💼Prof. Dr. Ir. R. Eko Indrajit\, M.Sc.\,
+	 MBA.\, M.Phil.\, MA.\nRector of Pradita University\,\nPradita University 
+	(Indonesia)\n\nThis webinar is FREE and open to the public\, and you'll re
+	ceive an E-Certificate!\n\nWatch the Live Streaming via:\nZoom: https://li
+	nk.icei.ac.id/CEF34th\nYoutube: https://link.icei.ac.id/StreamingCEF\n\n
+DTEND;TZID="SE Asia Standard Time":20250724T120000
+DTSTAMP:20250720T154636Z
+DTSTART;TZID="SE Asia Standard Time":20250724T100000
+LAST-MODIFIED:20250720T154636Z
+LOCATION:https://link.icei.ac.id/CEF34th
+PRIORITY:5
+SEQUENCE:0
+SUMMARY;LANGUAGE=en-us:The 34th Cyber Education Forum dengan topik Boundles
+	s Collaboration: Effective Strategies for Collaborative Virtual Learning
+TRANSP:OPAQUE
+UID:040000008200E00074C5B7101A82E008000000007D2E13C58CF9DB01000000000000000
+	010000000BF4A4556D97F8640BF43343FFAE01898
+X-ALT-DESC;FMTTYPE=text/html:<html>\n<head>\n\n</head>\n<body>\n<span style
+	="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European
+	)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; c
+	olor: rgb(0\, 0\, 0)\;"><img id="image_0" size="233599" contenttype="image
+	/jpeg" style="max-width: 624px\;" src="cid:ee169cc5-4b8b-4d98-8069-644ccdd
+	fd8fd"><br>\n</span>\n<div class="elementToProof" style="font-family: &quo
+	t\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;H
+	elvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0
+	)\;">\nBoundless collaboration starts with the right strategy!</div>\n<div
+	 class="elementToProof" style="font-family: &quot\;Segoe UI&quot\;\, &quot
+	\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue&quot\;\, san
+	s-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\nDiscover strategies
+	 for building effective virtual collaboration at the ICE Institute Webinar
+	 Series: The 34th Cyber ​​Education Forum on &quot\;Boundless Collabor
+	ation: Effective Strategies for Collaborative Virtual Learning&quot\;&nbsp
+	\;</div>\n<div class="elementToProof" style="font-family: &quot\;Segoe UI&
+	quot\;\, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neu
+	e&quot\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\n<br>\
+	n</div>\n<div class="elementToProof" style="font-family: &quot\;Segoe UI&q
+	uot\;\, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue
+	&quot\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\nThursd
+	ay\, July 24\, 2025</div>\n<div class="elementToProof" style="font-family:
+	 &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;\, &qu
+	ot\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 
+	0\, 0)\;">\n10:00 AM WIB (Jakarta Time/UTC+7)</div>\n<div class="elementTo
+	Proof" style="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (W
+	est European)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-si
+	ze: 12pt\; color: rgb(0\, 0\, 0)\;">\n<br>\n</div>\n<div class="elementToP
+	roof" style="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (We
+	st European)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-siz
+	e: 12pt\; color: rgb(0\, 0\, 0)\;">\nSpeaker:</div>\n<div class="elementTo
+	Proof" style="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (W
+	est European)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-si
+	ze: 12pt\; color: rgb(0\, 0\, 0)\;">\n👩🏼‍💼Ivy Shi</div>\n
+	<div class="elementToProof" style="font-family: &quot\;Segoe UI&quot\;\, &
+	quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue&quot\;\,
+	 sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\nFounder of Lear
+	nmonade\,</div>\n<div class="elementToProof" style="font-family: &quot\;Se
+	goe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvet
+	ica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">
+	\nLearnmonade (Hong Kong)</div>\n<div class="elementToProof" style="font-f
+	amily: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;
+	\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rg
+	b(0\, 0\, 0)\;">\n<br>\n</div>\n<div class="elementToProof" style="font-fa
+	mily: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;\
+	, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rgb
+	(0\, 0\, 0)\;">\n👨🏻‍💼Prof. Dr. Ir. R. Eko Indrajit\, M.Sc
+	.\, MBA.\, M.Phil.\, MA.</div>\n<div class="elementToProof" style="font-fa
+	mily: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;\
+	, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rgb
+	(0\, 0\, 0)\;">\nRector of Pradita University\,</div>\n<div class="element
+	ToProof" style="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web 
+	(West European)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-
+	size: 12pt\; color: rgb(0\, 0\, 0)\;">\nPradita University (Indonesia)</di
+	v>\n<div class="elementToProof" style="font-family: &quot\;Segoe UI&quot\;
+	\, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue&quot
+	\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\n<br>\n</div
+	>\n<div class="elementToProof" style="font-family: &quot\;Segoe UI&quot\;\
+	, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue&quot\
+	;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\nThis webinar
+	 is FREE and open to the public\, and you'll receive an E-Certificate!</di
+	v>\n<div class="elementToProof" style="font-family: &quot\;Segoe UI&quot\;
+	\, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue&quot
+	\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\n<br>\n</div
+	>\n<div class="elementToProof" style="font-family: &quot\;Segoe UI&quot\;\
+	, &quot\;Segoe UI Web (West European)&quot\;\, &quot\;Helvetica Neue&quot\
+	;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\, 0)\;">\nWatch the Li
+	ve Streaming via:</div>\n<div class="elementToProof" style="font-family: &
+	quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West European)&quot\;\, &quot
+	\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12pt\; color: rgb(0\, 0\
+	, 0)\;">\nZoom: https://link.icei.ac.id/CEF34th</div>\n<div class="element
+	ToProof" style="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web 
+	(West European)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-
+	size: 12pt\; color: rgb(0\, 0\, 0)\;">\nYoutube: <a href="https://link.ice
+	i.ac.id/StreamingCEF">https://link.icei.ac.id/StreamingCEF</a></div>\n<div
+	 style="font-family: &quot\;Segoe UI&quot\;\, &quot\;Segoe UI Web (West Eu
+	ropean)&quot\;\, &quot\;Helvetica Neue&quot\;\, sans-serif\; font-size: 12
+	pt\; color: rgb(0\, 0\, 0)\;">\n<br>\n</div>\n</body>\n</html>\n
+X-MICROSOFT-CDO-BUSYSTATUS:BUSY
+X-MICROSOFT-CDO-IMPORTANCE:1
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR
