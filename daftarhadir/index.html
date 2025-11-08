@@ -1,157 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attendance Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Registration</title>
 
-<!-- ✅ Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ✅ QRCode Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<!-- ✅ QRCode Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- ✅ Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<style>
-  body {
-    background: #f6f7fb;
-    font-family: "Segoe UI", sans-serif;
-  }
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-  .brand-header {
-    background: linear-gradient(135deg, #b70404, #e70606);
-    color: white;
-    padding: 30px;
-    border-radius: 20px 20px 0 0;
-    text-align: center;
-  }
+    <!-- Select2 Bootstrap 5 Theme -->
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+        rel="stylesheet" />
 
-  .brand-logo {
-    max-height: 80px;
-  }
-
-  .gender-option {
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: 0.3s;
+    <script>
+        function loadComponent(id, url) {
+  fetch("https://iceinstitut.github.io/konten/" + url)
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById(id).innerHTML = data;
+    });
 }
 
-.gender-option:hover {
-  border-color: #ff4b4b;
-  background: #fff5f5;
-}
+document.addEventListener("DOMContentLoaded", function() {
+  loadComponent("header", "header.html");
+  loadComponent("footer", "footer.html");
+});
+    </script>
+    <script>
+        fetch("https://iceinstitut.github.io/konten/head.html")
+  .then(response => response.text())
+  .then(data => {
+    const temp = document.createElement("div");
+    temp.innerHTML = data;
 
-.gender-option.selected {
-  border-color: #b70404;
-  background: #ffe2e2;
-  transform: scale(1.03);
-}
-</style>
+    // Proses <link> langsung
+    temp.querySelectorAll("link").forEach(link => {
+      document.head.appendChild(link);
+    });
+
+    // Proses <script> manual
+    temp.querySelectorAll("script").forEach(oldScript => {
+      const newScript = document.createElement("script");
+      newScript.src = oldScript.src;
+      if (oldScript.defer) newScript.defer = true;
+      document.head.appendChild(newScript);
+    });
+  });
+    </script>
+
+
+
+    <style>
+        body {
+            background: #f6f7fb;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .brand-header {
+            background: white;
+            color: #ee1522;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .brand-logo {
+            max-height: 50px;
+        }
+
+        .gender-option {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .gender-option:hover {
+            border-color: #ff4b4b;
+        }
+
+        .gender-option.selected {
+            border-color: #b70404;
+            transform: scale(1.03);
+        }
+    </style>
 </head>
 
 <body>
+    <div id="header"></div>
 
-<div class="container mt-5">
+    <div class="container mt-5">
 
-  <!-- ✅ HEAD BRAND -->
-  <div class="card shadow p-0 rounded-4">
-    <div class="brand-header">
-      <img src="YOUR_EVENT_LOGO_PATH_HERE" class="brand-logo mb-3">
-      <h3 id="eventTitle">Event Attendance Form</h3>
-      <p class="mb-0">Please fill out attendance information below</p>
-    </div>
+        <!-- ✅ HEAD BRAND -->
+        <div class="card shadow p-0 rounded-4">
+            <div class="brand-header border-5 border-bottom border-primary">
 
-    <!-- ✅ FORM -->
-    <div class="p-4">
-      <form id="attendanceForm">
-        <div class="row g-3">
+                <div class="row mb-5 justify-content-center align-items-center">
+                    <div class="col-auto p-1">
+                        <img src="https://iceinstitut.github.io/event/logo_host.png" alt="Logo 1" class="img-fluid" style="max-height: 80px; width: auto;">
+                    </div>
+                </div>
 
-          <div class="col-md-6">
-            <label>Email Address</label>
-            <input type="email" class="form-control" id="email" required>
-          </div>
+                <h2 id="eventTitle">Event Attendance Form</h2>
+                <p class="mb-0">Please fill out attendance information below</p>
 
-          <div class="col-md-6">
-            <label>Event</label>
-            <input type="text" class="form-control" id="even" required>
-          </div>
+                <div class="row mt-5 justify-content-center align-items-center">
+                    <div class="col-auto p-1">
+                        <h4 class="text-center text-dark mb-4">Sponsor</h4>
+                    </div>
+                    <div class="col-auto p-1">
+                        <img src="https://iceinstitut.github.io/event/logo_sponsor.png" alt="Sponsor 1" class="img-fluid" style="max-height: 50px; width: auto;">
+                    </div>
+                </div>
+            </div>
 
-          <div class="col-md-6">
-            <label>Full Name</label>
-            <input type="text" class="form-control" id="fullName" required>
-          </div>
+            <!-- ✅ FORM -->
+            <div class="p-4">
+                <form id="attendanceForm">
+                    <div class="row g-3">
 
-          <div class="col-md-6">
-  <label class="mb-2 d-block">Gender</label>
+                        <div class="col-md-12">
+                            <label>Event</label>
+                            <input type="text" class="form-control" id="even" required>
+                        </div>
 
-  <div class="d-flex gap-3">
+                        <div class="col-md-6">
+                            <label>Email Address</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
 
-    <div class="gender-option card flex-fill text-center p-3 rounded-4"
-         data-value="Male" onclick="selectGender(this)">
-      <div style="font-size:45px;">♂️</div>
-      <strong>Male</strong>
-    </div>
+                        <div class="col-md-6">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" id="fullName" required>
+                        </div>
 
-    <div class="gender-option card flex-fill text-center p-3 rounded-4"
-         data-value="Female" onclick="selectGender(this)">
-      <div style="font-size:45px;">♀️</div>
-      <strong>Female</strong>
-    </div>
+                        <div class="col-md-12">
+                            <label class="mb-2 d-block">Gender</label>
 
-  </div>
+                            <div class="d-flex gap-3">
 
-  <input type="hidden" id="gender" required>
-</div>
+                                <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Male"
+                                    onclick="selectGender(this)">
+                                    <div style="font-size:45px; color:#02a3fe;"><i class="bi bi-gender-male"></i></div>
+                                    <strong>Male</strong>
+                                </div>
 
-          <div class="col-md-6">
-            <label>Occupation</label>
-            <input type="text" class="form-control" id="occupation" required>
-          </div>
+                                <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Female"
+                                    onclick="selectGender(this)">
+                                    <div style="font-size:45px; color:#ec49a6;"><i class="bi bi-gender-female"></i>
+                                    </div>
+                                    <strong>Female</strong>
+                                </div>
 
-          <div class="col-md-6">
-            <label>Institution</label>
-            <input type="text" class="form-control" id="institution" required>
-          </div>
+                            </div>
 
-          <div class="col-md-6">
-            <label>Mobile Phone Number</label>
-            <input type="tel" class="form-control" id="mobile" required>
-          </div>
+                            <input type="hidden" id="gender" required>
+                        </div>
 
-          <div class="col-md-4">
-            <label>City</label>
-            <input type="text" class="form-control" id="city">
-          </div>
+                        <div class="col-md-4">
+                            <label>Occupation</label>
+                            <input type="text" class="form-control" id="occupation" required>
+                        </div>
 
-          <div class="col-md-4">
-            <label>Province</label>
-            <input type="text" class="form-control" id="province">
-          </div>
+                        <div class="col-md-4">
+                            <label>Institution</label>
+                            <input type="text" class="form-control" id="institution" required>
+                        </div>
 
-          <div class="col-md-4">
-            <label>Country</label>
-            <input type="text" class="form-control" id="country">
-          </div>
+                        <div class="col-md-4">
+                            <label>Mobile Phone Number</label>
+                            <input type="tel" class="form-control" id="mobile" required>
+                        </div>
 
+                        <div class="col-md-4">
+                            <label>Country</label>
+                            <select id="country" class="form-select select-search" required></select>
+                            <div class="form-text">If you cannot find your country name in the list, please contact us via email: <a class="text-primary" style="font-weight:400!important; text-decoration:none;" href="mailto:L.musowwir@icei.ac.id">L.musowwir@icei.ac.id</a></div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Province</label>
+                            <select id="province" class="form-select select-search" required></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>City</label>
+                            <select id="city" class="form-select select-search" required></select>
+                        </div>
+
+                    </div>
+
+                    <button class="btn btn-danger w-100 mt-4" type="submit">Submit Attendance</button>
+                </form>
+
+                <p class="text-center mt-3 fw-semibold" id="status"></p>
+            </div>
         </div>
 
-        <button class="btn btn-danger w-100 mt-4" type="submit">Submit Attendance</button>
-      </form>
+        <!-- ✅ QR CODE SECTION -->
+        <div class="card shadow mt-4 p-4 rounded-4">
+            <h5 class="text-center">QR Check-In Code</h5>
+            <div id="qrcode" class="d-flex justify-content-center mt-3"></div>
+            <p class="text-center small text-muted mt-2">Scan to open attendance form</p>
+        </div>
 
-      <p class="text-center mt-3 fw-semibold" id="status"></p>
     </div>
-  </div>
+    <div id="footer"></div>
 
-  <!-- ✅ QR CODE SECTION -->
-  <div class="card shadow mt-4 p-4 rounded-4">
-    <h5 class="text-center">QR Check-In Code</h5>
-    <div id="qrcode" class="d-flex justify-content-center mt-3"></div>
-    <p class="text-center small text-muted mt-2">Scan to open attendance form</p>
-  </div>
+    <!-- 1) jQuery (harus dipanggil dulu) -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-</div>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<script>
-const formURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";          // ← URL Web App dari Apps Script
+    <script>
+        const formURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";          // ← URL Web App dari Apps Script
 const publicWebFormURL = window.location.href;   // ← Auto detect link GitHub Pages
 
 // ✅ Generate QR Code pointing to web form (GitHub Pages)
@@ -171,13 +240,59 @@ function selectGender(el) {
   document.getElementById("gender").value = el.getAttribute("data-value");
 }
 
+const dataURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";  // <-- Web App GET endpoint
+
+let addressData = [];
+
+// ✅ Load dropdown COUNTRY dari Google Sheet
+fetch(dataURL)
+  .then(res => res.json())
+  .then(data => {
+    addressData = data;
+
+    const countries = [...new Set(data.map(x => x.country))].sort();
+
+    country.innerHTML = `<option selected disabled>Select Country</option>` +
+      countries.map(c => `<option value="${c}">${c}</option>`).join("");
+  });
+
+// ✅ On change COUNTRY → populate PROVINCE
+country.addEventListener("change", function () {
+  const provinces = [...new Set(
+    addressData
+      .filter(x => x.country === this.value)
+      .map(x => x.province)
+  )].sort();
+
+  province.innerHTML = `<option selected disabled>Select Province</option>` +
+    provinces.map(p => `<option value="${p}">${p}</option>`).join("");
+
+  province.disabled = false;
+  city.disabled = true;
+  city.innerHTML = `<option selected disabled>Select City</option>`;
+});
+
+// ✅ On change PROVINCE → populate CITY
+province.addEventListener("change", function () {
+  const cities = addressData
+    .filter(x => x.country === country.value && x.province === this.value)
+    .map(x => x.city)
+    .sort();
+
+  city.innerHTML = `<option selected disabled>Select City</option>` +
+    cities.map(c => `<option value="${c}">${c}</option>`).join("");
+
+  city.disabled = false;
+});
+
+
 // ✅ AUTO-FILL EVENT FROM URL PARAMETER
 function autofillEventFromURL() {
   const params = new URLSearchParams(window.location.search);
-  const eventParam = params.get("event");
+  const eventParam = params.get("even");
 
   if (eventParam) {
-    const eventInput = document.getElementById("event");
+    const eventInput = document.getElementById("even");
 
     // ganti underscore menjadi spasi agar lebih rapi
     const formattedEvent = decodeURIComponent(eventParam).replace(/_/g, " ");
@@ -200,33 +315,165 @@ autofillEventFromURL();
 document.getElementById("attendanceForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const data = {
-    email: email.value,
-    even: even.value,
-    fullName: fullName.value,
-    gender: gender.value,
-    occupation: occupation.value,
-    institution: institution.value,
-    mobile: mobile.value,
-    city: city.value,
-    province: province.value,
-    country: country.value,
+  // ✅ Ambil nilai input
+  const formValues = {
+    email: email.value.trim(),
+    even: even.value.trim(),
+    fullName: fullName.value.trim(),
+    gender: gender.value.trim(),
+    occupation: occupation.value.trim(),
+    institution: institution.value.trim(),
+    mobile: mobile.value.trim(),
+    city: city.value.trim(),
+    province: province.value.trim(),
+    country: country.value.trim(),
   };
 
+  // ✅ Validasi semua field wajib diisi
+  for (let key in formValues) {
+    if (formValues[key] === "") {
+      Swal.fire({
+        icon: "warning",
+        title: "Field Required",
+        text: "Please complete all required fields.",
+      });
+      return;
+    }
+  }
+
+  // ✅ Validasi nomor HP
+  const phoneRegex = /^(?:\+62|62|0)8[1-9][0-9]{6,11}$/;
+
+  if (!phoneRegex.test(formValues.mobile)) {
+    Swal.fire({
+      icon: "error",
+      title: "Invalid Phone Number",
+      text: "Enter a valid phone number (ex: 08xxx or +628xxx (+62) is code country.",
+    });
+    return;
+  }
+
+  // ✅ Jika valid → tampilkan loading
+  Swal.fire({
+    title: "Submitting...",
+    text: "Please wait while your attendance is being recorded.",
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  // ✅ Kirim ke Apps Script
   fetch(formURL, {
     method: "POST",
-    body: JSON.stringify(data),
+    body: JSON.stringify(formValues),
   })
   .then(res => res.json())
   .then(res => {
-    status.innerHTML = "✅ Attendance recorded successfully!";
-    attendanceForm.reset();
+
+    Swal.close(); // tutup loading alert
+
+    if (res.status === "duplicate") {
+      Swal.fire({
+        icon: "warning",
+        title: "Already Checked In",
+        text: "Your attendance was already recorded.",
+        confirmButtonColor: "#d33",
+      });
+      return;
+    }
+
+    if (res.status === "success") {
+  Swal.fire({
+    icon: "success",
+    title: "Attendance Recorded",
+    text: "Thank you for your participation!",
+    confirmButtonColor: "#28a745",
+    timer: 2500,               // auto close after 2.5s
+    timerProgressBar: true
+  }).then(() => {
+    // ✅ Redirect setelah SweetAlert selesai
+    window.location.href = "https://www.icei.ac.id";
+  });
+
+  attendanceForm.reset();
+  document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
+}
   })
   .catch(() => {
-    status.innerHTML = "❌ Failed to submit. Try again.";
+    Swal.close();
+    Swal.fire({
+      icon: "error",
+      title: "Submission Failed",
+      text: "Please try again later.",
+      confirmButtonColor: "#b70404",
+    });
   });
 });
-</script>
+// ✅ Akhir Submit form ke Google Apps Script
+
+// === INITIALIZE SELECT2 ===
+$(".select-search").select2({
+  theme: "bootstrap4",
+  width: "100%",
+  placeholder: "Select an option...",
+  allowClear: true
+});
+
+// === FETCH DATA ALAMAT DARI APP SCRIPT ===
+const alamatURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";
+
+let alamatData = [];
+
+// 🔄 Load Data Alamat dari Sheet
+fetch(alamatURL)
+  .then(res => res.json())
+  .then(data => {
+    alamatData = data;
+    loadCountries();
+  });
+
+// 🎯 Load Country List
+function loadCountries() {
+  const countries = [...new Set(alamatData.map(item => item.country))].sort();
+  $("#country").empty().append(`<option></option>`);
+  countries.forEach(c => $("#country").append(`<option value="${c}">${c}</option>`));
+}
+
+// 🎯 Saat Country berubah → load Province
+$("#country").on("change", function () {
+  const selectedCountry = $(this).val();
+
+  const provinces = [
+    ...new Set(
+      alamatData
+        .filter(item => item.country === selectedCountry)
+        .map(item => item.province)
+    ),
+  ].sort();
+
+  $("#province").empty().append(`<option></option>`);
+  $("#city").empty().append(`<option></option>`);
+
+  provinces.forEach(p => $("#province").append(`<option value="${p}">${p}</option>`));
+});
+
+// 🎯 Saat Province berubah → load City
+$("#province").on("change", function () {
+  const selectedCountry = $("#country").val();
+  const selectedProvince = $(this).val();
+
+  const cities = alamatData
+    .filter(item => item.country === selectedCountry && item.province === selectedProvince)
+    .map(item => item.city)
+    .sort();
+
+  $("#city").empty().append(`<option></option>`);
+  cities.forEach(c => $("#city").append(`<option value="${c}">${c}</option>`));
+});
+
+    </script>
 
 </body>
+
 </html>
