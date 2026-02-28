@@ -1,479 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Registration</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <link rel="icon" href="https://iceinstitut.github.io/image/aset/favicon_icei.png" type="image/png">
+  <title>Attendance Registration</title>
 
-    <!-- ✅ QRCode Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- QRCode -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- ✅ Sweet Alert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-    <!-- Select2 Bootstrap 5 Theme -->
-    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
-        rel="stylesheet" />
+  <!-- Select2 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
 
     <script>
         function loadComponent(id, url) {
-  fetch("https://iceinstitut.github.io/konten/" + url)
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById(id).innerHTML = data;
-    });
-}
+            fetch("https://iceinstitut.github.io/konten/" + url)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById(id).innerHTML = data;
+            });
+        }
 
-document.addEventListener("DOMContentLoaded", function() {
-  loadComponent("header", "header.html");
-  loadComponent("footer", "footer.html");
-});
-    </script>
-    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            loadComponent("header", "header.html");
+            loadComponent("footer", "footer.html");
+        });
+
         fetch("https://iceinstitut.github.io/konten/head.html")
-  .then(response => response.text())
-  .then(data => {
-    const temp = document.createElement("div");
-    temp.innerHTML = data;
+        .then(response => response.text())
+        .then(data => {
+            const temp = document.createElement("div");
+            temp.innerHTML = data;
 
-    // Proses <link> langsung
-    temp.querySelectorAll("link").forEach(link => {
-      document.head.appendChild(link);
-    });
+            // Proses <link> langsung
+            temp.querySelectorAll("link").forEach(link => {
+                document.head.appendChild(link);
+            });
 
-    // Proses <script> manual
-    temp.querySelectorAll("script").forEach(oldScript => {
-      const newScript = document.createElement("script");
-      newScript.src = oldScript.src;
-      if (oldScript.defer) newScript.defer = true;
-      document.head.appendChild(newScript);
-    });
-  });
+            // Proses <script> manual
+            temp.querySelectorAll("script").forEach(oldScript => {
+                const newScript = document.createElement("script");
+                newScript.src = oldScript.src;
+                if (oldScript.defer) newScript.defer = true;
+                document.head.appendChild(newScript);
+            });
+        });
     </script>
 
+  <style>
+    body { background: #f6f7fb; font-family: "Segoe UI", sans-serif; }
 
+    .brand-header{
+      background:#fff; color:#ee1522; padding:30px;
+      border-radius:20px 20px 0 0; text-align:center;
+    }
 
-    <style>
-        body {
-            background: #f6f7fb;
-            font-family: "Segoe UI", sans-serif;
-        }
+    .gender-option{ cursor:pointer; border:2px solid transparent; transition:.2s; }
+    .gender-option:hover{ border-color:#ff4b4b; }
+    .gender-option.selected{ border-color:#b70404; transform: scale(1.02); }
 
-        .brand-header {
-            background: white;
-            color: #ee1522;
-            padding: 30px;
-            border-radius: 20px 20px 0 0;
-            text-align: center;
-        }
-
-        .brand-logo {
-            max-height: 50px;
-        }
-
-        .gender-option {
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: 0.3s;
-        }
-
-        .gender-option:hover {
-            border-color: #ff4b4b;
-        }
-
-        .gender-option.selected {
-            border-color: #b70404;
-            transform: scale(1.03);
-        }
-    </style>
+    /* Select2 mobile stability */
+    #attendanceForm .select2-container.select2-container { width: 100% !important; }
+    .select2-selection { min-height: 38px; }
+    .select2-selection__rendered { line-height: 36px !important; }
+  </style>
 </head>
 
 <body>
-    <div id="header"></div>
+  <div id="header"></div>
 
-    <div class="container mt-5">
-
-        <!-- ✅ HEAD BRAND -->
-        <div class="card shadow p-0 rounded-4">
-            <div class="brand-header border-5 border-bottom border-primary">
-
-                <div class="row mb-5 justify-content-center align-items-center">
-                    <div class="col-auto p-1">
-                        <img src="https://iceinstitut.github.io/event/logo_host.png" alt="Logo 1" class="img-fluid" style="max-height: 80px; width: auto;">
-                    </div>
-                </div>
-
-                <h2 id="eventTitle">Event Attendance Form</h2>
-                <p class="mb-0">Please fill out attendance information below</p>
-
-                <div class="row mt-5 justify-content-center align-items-center">
-                    <div class="col-auto p-1">
-                        <img src="https://iceinstitut.github.io/event/logo_sponsor.png" alt="Sponsor 1" class="img-fluid" style="max-height: 150px; width: auto;">
-                    </div>
-                </div>
-            </div>
-
-            <!-- ✅ FORM -->
-            <div class="p-4">
-                <form id="attendanceForm">
-                    <div class="row g-3">
-
-                        <div class="col-md-12">
-                            <label>Event</label>
-                            <input type="text" class="form-control" id="even" required>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label>Email Address</label>
-                            <input type="email" class="form-control" id="email" required>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label>Full Name</label>
-                            <input type="text" class="form-control" id="fullName" required>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label class="mb-2 d-block">Gender</label>
-
-                            <div class="d-flex gap-3">
-
-                                <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Male"
-                                    onclick="selectGender(this)">
-                                    <div style="font-size:45px; color:#02a3fe;"><i class="bi bi-gender-male"></i></div>
-                                    <strong>Male</strong>
-                                </div>
-
-                                <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Female"
-                                    onclick="selectGender(this)">
-                                    <div style="font-size:45px; color:#ec49a6;"><i class="bi bi-gender-female"></i>
-                                    </div>
-                                    <strong>Female</strong>
-                                </div>
-
-                            </div>
-
-                            <input type="hidden" id="gender" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>Occupation</label>
-                            <input type="text" class="form-control" id="occupation" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>Institution</label>
-                            <input type="text" class="form-control" id="institution" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>Mobile Phone Number</label>
-                            <input type="tel" class="form-control" id="mobile" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>Country</label>
-                            <select id="country" class="form-select select-search" required></select>
-                            <div class="form-text">If you cannot find your country name in the list, please contact us
-                                via email: <a class="text-primary"
-                                    style="font-weight:400!important; text-decoration:none;"
-                                    href="mailto:L.musowwir@icei.ac.id">L.musowwir@icei.ac.id</a></div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>Province</label>
-                            <select id="province" class="form-select select-search" required></select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>City</label>
-                            <select id="city" class="form-select select-search" required></select>
-                        </div>
-
-                    </div>
-
-                    <button class="btn btn-danger w-100 mt-4" type="submit">Submit Attendance</button>
-                </form>
-
-                <p class="text-center mt-3 fw-semibold" id="status"></p>
-            </div>
+  <div class="container mt-5">
+    <div class="card shadow p-0 rounded-4">
+      <div class="brand-header border-5 border-bottom border-primary">
+        <div class="row mb-5 justify-content-center align-items-center">
+          <div class="col-auto p-1">
+            <img src="https://iceinstitut.github.io/event/logo_host.png" alt="Logo Host" class="img-fluid"
+              style="max-height:80px;width:auto;">
+          </div>
         </div>
 
-        <!-- ✅ QR CODE SECTION -->
-        <div class="card shadow mt-4 p-4 rounded-4">
-            <h5 class="text-center">QR Check-In Code</h5>
-            <div id="qrcode" class="d-flex justify-content-center mt-3"></div>
-            <p class="text-center small text-muted mt-2">Scan to open attendance form</p>
-        </div>
+        <h2 id="eventTitle">Event Attendance Form</h2>
 
+        <div class="row mt-5 justify-content-center align-items-center">
+          <div class="col-auto p-1">
+            <img src="https://iceinstitut.github.io/event/logo_sponsor.png" alt="Logo Sponsor" class="img-fluid"
+              style="max-height:150px;width:auto;">
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4">
+        <form id="attendanceForm">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label>Event</label>
+              <input type="text" class="form-control" id="even" required />
+              <div class="form-text" style="display: none;">Event akan terisi otomatis dari URL (?even=...)</div>
+            </div>
+
+            <div class="col-md-6">
+              <label>Email Address</label>
+              <input type="email" class="form-control" id="email" required />
+            </div>
+
+            <div class="col-md-6">
+              <label>Full Name</label>
+              <input type="text" class="form-control" id="fullName" required />
+            </div>
+
+            <div class="col-md-12">
+              <label class="mb-2 d-block">Gender</label>
+              <div class="d-flex gap-3">
+                <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Male" onclick="selectGender(this)">
+                  <div style="font-size:45px; color:#02a3fe;"><i class="bi bi-gender-male"></i></div>
+                  <strong>Male</strong>
+                </div>
+                <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Female" onclick="selectGender(this)">
+                  <div style="font-size:45px; color:#ec49a6;"><i class="bi bi-gender-female"></i></div>
+                  <strong>Female</strong>
+                </div>
+              </div>
+              <input type="hidden" id="gender" required />
+            </div>
+
+            <div class="col-md-4">
+              <label>Occupation</label>
+              <input type="text" class="form-control" id="occupation" placeholder="e.g. Student, Job Seeker, Homemaker, Entrepreneur, Freelancer, Teacher" required />
+            </div>
+
+            <div class="col-md-4">
+              <label>Institution</label>
+              <input type="text" class="form-control" id="institution" placeholder="e.g. Universitas Terbuka, Community, Independent" required />
+            </div>
+
+            <div class="col-md-4">
+              <label>Mobile Phone Number</label>
+              <input type="tel" class="form-control" id="mobile" placeholder="Use international format (e.g. +628123456789)" required />
+            </div>
+
+            <div class="col-md-4">
+              <label>Country</label>
+              <!-- Native select first; Select2 will enhance after data loaded -->
+              <select id="country" class="form-select select-search" required></select>
+            </div>
+
+            <div class="col-md-4">
+              <label>Province</label>
+              <select id="province" class="form-select select-search" required></select>
+            </div>
+
+            <div class="col-md-4">
+              <label>City</label>
+              <select id="city" class="form-select select-search" required></select>
+            </div>
+
+            <div class="col-12">
+              <button type="button" id="reloadAlamat" class="btn btn-outline-danger btn-sm mt-2">
+                <i class="bi bi-arrow-clockwise me-1"></i> Reload address data
+              </button>
+              <div class="form-text text-muted">
+                If the address dropdown is empty on your phone, click this button <b>Reload address data</b>or refresh the page.
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn btn-danger w-100 mt-4" type="submit">Submit Attendance</button>
+        </form>
+
+        <p class="text-center mt-3 fw-semibold" id="status"></p>
+      </div>
     </div>
-    <div id="footer"></div>
 
-    <!-- 1) jQuery (harus dipanggil dulu) -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="card shadow mt-4 p-4 rounded-4">
+      <h5 class="text-center">QR Check-In Code</h5>
+      <div id="qrcode" class="d-flex justify-content-center mt-3"></div>
+      <p class="text-center small text-muted mt-2">Scan to open attendance form</p>
+    </div>
+  </div>
 
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <div id="footer"></div>
 
-    <script>
-        const formURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";          // ← URL Web App dari Apps Script
-const publicWebFormURL = window.location.href;   // ← Auto detect link GitHub Pages
+  <!-- jQuery + Select2 -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-// ✅ Generate QR Code pointing to web form (GitHub Pages)
-new QRCode(document.getElementById("qrcode"), {
-  text: publicWebFormURL,
-  width: 150,
-  height: 150,
-});
+  <script>
+    /************************************************************
+     * CONFIG
+     ************************************************************/
+    const WORKER_API_BASE = "https://presensi.ice-institut.workers.dev/api";
 
-// ✅ Fungsi Icon Gender
-function selectGender(el) {
-  document.querySelectorAll('.gender-option').forEach(option => {
-    option.classList.remove("selected");
-  });
-
-  el.classList.add("selected");
-  document.getElementById("gender").value = el.getAttribute("data-value");
-}
-
-const dataURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";  // <-- Web App GET endpoint
-
-let addressData = [];
-
-// ✅ Load dropdown COUNTRY dari Google Sheet
-fetch(dataURL)
-  .then(res => res.json())
-  .then(data => {
-    addressData = data;
-
-    const countries = [...new Set(data.map(x => x.country))].sort();
-
-    country.innerHTML = `<option selected disabled>Select Country</option>` +
-      countries.map(c => `<option value="${c}">${c}</option>`).join("");
-  });
-
-// ✅ On change COUNTRY → populate PROVINCE
-country.addEventListener("change", function () {
-  const provinces = [...new Set(
-    addressData
-      .filter(x => x.country === this.value)
-      .map(x => x.province)
-  )].sort();
-
-  province.innerHTML = `<option selected disabled>Select Province</option>` +
-    provinces.map(p => `<option value="${p}">${p}</option>`).join("");
-
-  province.disabled = false;
-  city.disabled = true;
-  city.innerHTML = `<option selected disabled>Select City</option>`;
-});
-
-// ✅ On change PROVINCE → populate CITY
-province.addEventListener("change", function () {
-  const cities = addressData
-    .filter(x => x.country === country.value && x.province === this.value)
-    .map(x => x.city)
-    .sort();
-
-  city.innerHTML = `<option selected disabled>Select City</option>` +
-    cities.map(c => `<option value="${c}">${c}</option>`).join("");
-
-  city.disabled = false;
-});
-
-
-// ✅ AUTO-FILL EVENT FROM URL PARAMETER
-function autofillEventFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const eventParam = params.get("even");
-
-  if (eventParam) {
-    const eventInput = document.getElementById("even");
-
-    // ganti underscore menjadi spasi agar lebih rapi
-    const formattedEvent = decodeURIComponent(eventParam).replace(/_/g, " ");
-
-    eventInput.value = formattedEvent;
-
-    // update title event di header brand
-    const eventTitle = document.getElementById("eventTitle");
-    if (eventTitle) {
-      eventTitle.innerText = formattedEvent;
-    }
-  }
-}
-
-// 🔥 jalankan otomatis saat halaman dibuka
-autofillEventFromURL();
-
-
-// ✅ Submit form ke Google Apps Script
-document.getElementById("attendanceForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  // ✅ Ambil nilai input
-  const formValues = {
-    email: email.value.trim(),
-    even: even.value.trim(),
-    fullName: fullName.value.trim(),
-    gender: gender.value.trim(),
-    occupation: occupation.value.trim(),
-    institution: institution.value.trim(),
-    mobile: mobile.value.trim(),
-    city: city.value.trim(),
-    province: province.value.trim(),
-    country: country.value.trim(),
-  };
-
-  // ✅ Validasi semua field wajib diisi
-  for (let key in formValues) {
-    if (formValues[key] === "") {
-      Swal.fire({
-        icon: "warning",
-        title: "Field Required",
-        text: "Please complete all required fields.",
-      });
-      return;
-    }
-  }
-
-  // ✅ Validasi nomor HP
-  const phoneRegex = /^(?:\+62|62|0)8[1-9][0-9]{6,11}$/;
-
-  if (!phoneRegex.test(formValues.mobile)) {
-    Swal.fire({
-      icon: "error",
-      title: "Invalid Phone Number",
-      text: "Enter a valid phone number (ex: 08xxx or +628xxx (+62) is code country.",
+    /************************************************************
+     * QR Code
+     ************************************************************/
+    new QRCode(document.getElementById("qrcode"), {
+      text: window.location.href,
+      width: 150,
+      height: 150
     });
-    return;
-  }
 
-  // ✅ Jika valid → tampilkan loading
-  Swal.fire({
-    title: "Submitting...",
-    text: "Please wait while your attendance is being recorded.",
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    allowEnterKey: false,
-    didOpen: () => Swal.showLoading()
-  });
-
-  // ✅ Kirim ke Apps Script
-  fetch(formURL, {
-    method: "POST",
-    body: JSON.stringify(formValues),
-  })
-  .then(res => res.json())
-  .then(res => {
-
-    Swal.close(); // tutup loading alert
-
-    if (res.status === "duplicate") {
-      Swal.fire({
-        icon: "warning",
-        title: "Already Checked In",
-        text: "Your attendance was already recorded.",
-        confirmButtonColor: "#d33",
-      });
-      return;
+    /************************************************************
+     * Gender picker
+     ************************************************************/
+    function selectGender(el) {
+      document.querySelectorAll(".gender-option").forEach(o => o.classList.remove("selected"));
+      el.classList.add("selected");
+      document.getElementById("gender").value = el.getAttribute("data-value");
     }
 
-    if (res.status === "success") {
-  Swal.fire({
-    icon: "success",
-    title: "Attendance Recorded",
-    text: "Thank you for your participation!",
-    confirmButtonColor: "#28a745",
-    timer: 2500,               // auto close after 2.5s
-    timerProgressBar: true
-  }).then(() => {
-    // ✅ Redirect setelah SweetAlert selesai
-    window.location.href = "https://www.icei.ac.id";
-  });
+    /************************************************************
+     * Event from URL (?even=...)
+     ************************************************************/
+    function getQueryParam(name) {
+      return new URLSearchParams(window.location.search).get(name) || "";
+    }
 
-  attendanceForm.reset();
-  document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
-}
-  })
-  .catch(() => {
-    Swal.close();
-    Swal.fire({
-      icon: "error",
-      title: "Submission Failed",
-      text: "Please try again later.",
-      confirmButtonColor: "#b70404",
-    });
-  });
-});
-// ✅ Akhir Submit form ke Google Apps Script
+    function autofillEventFromURL() {
+      const eventParam = getQueryParam("even");
+      if (!eventParam) return;
 
-// === INITIALIZE SELECT2 ===
-$(".select-search").select2({
-  theme: "bootstrap4",
-  width: "100%",
-  placeholder: "Select an option...",
-  allowClear: true
-});
+      const eventInput = document.getElementById("even");
+      const decoded = decodeURIComponent(eventParam).replace(/_/g, " ");
+      eventInput.value = decoded;
+      eventInput.readOnly = true;
 
-// === FETCH DATA ALAMAT DARI APP SCRIPT ===
-const alamatURL = "https://script.google.com/macros/s/AKfycbzFKz32zF_-Z2LGXlGEccRYpuaadMTTabrENXCsGy-NyINc-RVWUypEpGhcr2Hf5g1EYg/exec";
+      const eventTitle = document.getElementById("eventTitle");
+      if (eventTitle) eventTitle.innerText = decoded;
+    }
+    autofillEventFromURL();
 
+    /************************************************************
+     * Fetch helpers: timeout + retry + JSON content-type guard
+     ************************************************************/
+    async function fetchWithTimeout(url, opts = {}, timeoutMs = 12000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, { ...opts, signal: controller.signal });
+      } finally {
+        clearTimeout(id);
+      }
+    }
+
+    async function fetchJSONWithRetry(url, retries = 2) {
+      let lastErr = null;
+      for (let i = 0; i <= retries; i++) {
+        try {
+          const res = await fetchWithTimeout(url, { method: "GET" }, 12000);
+          const ct = (res.headers.get("content-type") || "").toLowerCase();
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          if (!ct.includes("application/json")) {
+            const txt = await res.text();
+            throw new Error(`Non-JSON response: ${txt.slice(0, 100)}...`);
+          }
+          return await res.json();
+        } catch (err) {
+          lastErr = err;
+          await new Promise(r => setTimeout(r, 400 * (i + 1)));
+        }
+      }
+      throw lastErr;
+    }
+
+    /************************************************************
+ * Address: progressive enhancement (native first, Select2 later)
+ ************************************************************/
 let alamatData = [];
+let select2Ready = false;
 
-// 🔄 Load Data Alamat dari Sheet
-fetch(alamatURL)
-  .then(res => res.json())
-  .then(data => {
-    alamatData = data;
-    loadCountries();
-  });
-
-// 🎯 Load Country List
-function loadCountries() {
-  const countries = [...new Set(alamatData.map(item => item.country))].sort();
-  $("#country").empty().append(`<option></option>`);
-  countries.forEach(c => $("#country").append(`<option value="${c}">${c}</option>`));
+function uniqueSorted(arr) {
+  return [...new Set(arr)].sort((a, b) => String(a).localeCompare(String(b)));
 }
 
-// 🎯 Saat Country berubah → load Province
-$("#country").on("change", function () {
-  const selectedCountry = $(this).val();
+function fillSelectOptions(selectEl, list) {
+  selectEl.innerHTML = `<option value=""></option>`;
+  for (const v of list) {
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    selectEl.appendChild(opt);
+  }
+}
 
-  const provinces = [
-    ...new Set(
-      alamatData
-        .filter(item => item.country === selectedCountry)
-        .map(item => item.province)
-    ),
-  ].sort();
+function initSelect2Once() {
+  if (select2Ready) return;
+  select2Ready = true;
 
-  $("#province").empty().append(`<option></option>`);
-  $("#city").empty().append(`<option></option>`);
+  try {
+    $(".select-search").select2({
+      theme: "bootstrap4",
+      width: "100%",
+      placeholder: "Search…",
+      allowClear: true,
+      dropdownAutoWidth: true
+    });
 
-  provinces.forEach(p => $("#province").append(`<option value="${p}">${p}</option>`));
+    // iOS/Android: fokus ke search field saat open
+    $(document).on("select2:open", () => {
+      setTimeout(() => {
+        const el = document.querySelector(".select2-container--open .select2-search__field");
+        if (el) el.focus();
+      }, 50);
+    });
+  } catch (e) {
+    // fallback tetap native select (tanpa search) kalau select2 gagal
+    select2Ready = false;
+    console.warn("Select2 init failed. Native select will be used.", e);
+  }
+}
+
+// ✅ paling stabil di HP: destroy dulu, update option native, lalu init lagi
+function rebuildSelect2(id) {
+  if (!select2Ready) return;
+  const $el = $("#" + id);
+  try {
+    $el.select2("destroy");
+  } catch (_) {}
+  // init lagi hanya untuk elemen itu (lebih cepat dari init semua)
+  try {
+    $el.select2({
+      theme: "bootstrap4",
+      width: "100%",
+      placeholder: "Search…",
+      allowClear: true,
+      dropdownAutoWidth: true
+    });
+  } catch (e) {
+    console.warn("Select2 rebuild failed for:", id, e);
+  }
+}
+
+function getProvinces(country) {
+  return uniqueSorted(
+    alamatData.filter(x => x.country === country).map(x => x.province).filter(Boolean)
+  );
+}
+
+function getCities(country, province) {
+  return uniqueSorted(
+    alamatData
+      .filter(x => x.country === country && x.province === province)
+      .map(x => x.city)
+      .filter(Boolean)
+  );
+}
+
+function bindAlamatEvents() {
+  const countryEl = document.getElementById("country");
+  const provinceEl = document.getElementById("province");
+  const cityEl = document.getElementById("city");
+
+  async function onCountryChanged() {
+    const country = countryEl.value;
+
+    // reset province & city
+    fillSelectOptions(provinceEl, []);
+    fillSelectOptions(cityEl, []);
+    provinceEl.disabled = true;
+    cityEl.disabled = true;
+
+    // reset values
+    if (select2Ready) {
+      $("#province").val(null).trigger("change");
+      $("#city").val(null).trigger("change");
+    } else {
+      provinceEl.value = "";
+      cityEl.value = "";
+    }
+
+    // kalau data belum siap, jangan lanjut
+    if (!alamatData || alamatData.length === 0) {
+      console.warn("alamatData belum siap saat country berubah.");
+      return;
+    }
+
+    if (!country) {
+      rebuildSelect2("province");
+      rebuildSelect2("city");
+      return;
+    }
+
+    const provinces = getProvinces(country);
+    fillSelectOptions(provinceEl, provinces);
+
+    // ✅ enable province kalau ada data
+    provinceEl.disabled = provinces.length === 0;
+
+    // rebuild select2 untuk sinkron UI
+    rebuildSelect2("province");
+    rebuildSelect2("city");
+  }
+
+  async function onProvinceChanged() {
+    const country = countryEl.value;
+    const province = provinceEl.value;
+
+    fillSelectOptions(cityEl, []);
+    cityEl.disabled = true;
+
+    if (select2Ready) {
+      $("#city").val(null).trigger("change");
+    } else {
+      cityEl.value = "";
+    }
+
+    if (!alamatData || alamatData.length === 0) return;
+    if (!country || !province) {
+      rebuildSelect2("city");
+      return;
+    }
+
+    const cities = getCities(country, province);
+    fillSelectOptions(cityEl, cities);
+
+    // ✅ enable city kalau ada data
+    cityEl.disabled = cities.length === 0;
+
+    rebuildSelect2("city");
+  }
+
+  // 1) Native DOM change (desktop & sebagian mobile)
+  countryEl.addEventListener("change", onCountryChanged);
+  provinceEl.addEventListener("change", onProvinceChanged);
+
+  // 2) Select2 change (paling stabil)
+  $(document).on("change", "#country", onCountryChanged);
+  $(document).on("change", "#province", onProvinceChanged);
+}
+
+async function setupAlamat() {
+  const countryEl = document.getElementById("country");
+  const provinceEl = document.getElementById("province");
+  const cityEl = document.getElementById("city");
+
+  // Disable sementara
+  countryEl.disabled = true;
+  provinceEl.disabled = true;
+  cityEl.disabled = true;
+
+  fillSelectOptions(countryEl, []);
+  fillSelectOptions(provinceEl, []);
+  fillSelectOptions(cityEl, []);
+
+  // ambil alamat dari worker (cache di edge)
+  const json = await fetchJSONWithRetry(`${WORKER_API_BASE}?action=alamat`, 2);
+  alamatData = Array.isArray(json) ? json : (json.data || []);
+
+  if (!alamatData.length) throw new Error("Alamat data kosong.");
+
+  // isi country options
+  const countries = uniqueSorted(alamatData.map(x => x.country).filter(Boolean));
+  fillSelectOptions(countryEl, countries);
+  countryEl.disabled = false;
+
+  // init select2 setelah opsi sudah terisi (penting)
+  initSelect2Once();
+
+  // kalau select2 aktif, rebuild country supaya sinkron (menghindari kasus HP blank)
+  rebuildSelect2("country");
+  rebuildSelect2("province");
+  rebuildSelect2("city");
+}
+
+    /************************************************************
+     * Custome Validation
+     ************************************************************/
+function isValidText(value, type = "general") {
+  const cleaned = value.trim();
+
+  if (cleaned.length < 3) return false;
+
+  if (/^[^a-zA-Z]+$/.test(cleaned)) return false;
+  if (/^\d+$/.test(cleaned)) return false;
+  if (cleaned.length === 1) return false;
+
+  if (type === "occupation") {
+    if (cleaned.split(" ").length === 1 && cleaned.length <= 3) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isValidPhone(value) {
+  const cleaned = value.trim();
+
+  // Hanya boleh angka dan optional + di depan
+  if (!/^\+?\d+$/.test(cleaned)) return false;
+
+  // Panjang 9 - 15 digit (tanpa +)
+  const digits = cleaned.replace("+", "");
+  if (digits.length < 9 || digits.length > 15) return false;
+
+  return true;
+}
+
+document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+
+  const occupationInput = document.getElementById("occupation");
+  const institutionInput = document.getElementById("institution");
+  const mobileInput = document.getElementById("mobile");
+
+  const occupation = occupationInput.value;
+  const institution = institutionInput.value;
+  const mobile = mobileInput.value;
+
+  if (!isValidText(occupation, "occupation")) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    Swal.fire({
+      icon: "warning",
+      title: "Invalid Occupation",
+      text: "Please enter your occupation/status (e.g. Student, Job Seeker, Homemaker, Entrepreneur, Freelancer, Teacher).",
+      confirmButtonColor: "#ee1522"
+    });
+
+    occupationInput.focus();
+    return false;
+  }
+
+  if (!isValidText(institution, "institution")) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    Swal.fire({
+      icon: "warning",
+      title: "Invalid Institution",
+      text: "Please enter your affiliation (e.g. Universitas Terbuka, Community, Independent).",
+      confirmButtonColor: "#ee1522"
+    });
+
+    institutionInput.focus();
+    return false;
+  }
+
+  if (!isValidPhone(mobile)) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    Swal.fire({
+      icon: "warning",
+      title: "Invalid Mobile Number",
+      text: "Please enter a valid phone number (9–15 digits, numbers only).",
+      confirmButtonColor: "#ee1522"
+    });
+
+    mobileInput.focus();
+    return false;
+  }
+
 });
 
-// 🎯 Saat Province berubah → load City
-$("#province").on("change", function () {
-  const selectedCountry = $("#country").val();
-  const selectedProvince = $(this).val();
+    /************************************************************
+     * Submit attendance
+     ************************************************************/
+    document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-  const cities = alamatData
-    .filter(item => item.country === selectedCountry && item.province === selectedProvince)
-    .map(item => item.city)
-    .sort();
+      const payload = {
+        email: document.getElementById("email").value.trim(),
+        even: document.getElementById("even").value.trim(),
+        fullName: document.getElementById("fullName").value.trim(),
+        gender: document.getElementById("gender").value.trim(),
+        occupation: document.getElementById("occupation").value.trim(),
+        institution: document.getElementById("institution").value.trim(),
+        mobile: document.getElementById("mobile").value.trim(),
+        country: document.getElementById("country").value.trim(),
+        province: document.getElementById("province").value.trim(),
+        city: document.getElementById("city").value.trim()
+      };
 
-  $("#city").empty().append(`<option></option>`);
-  cities.forEach(c => $("#city").append(`<option value="${c}">${c}</option>`));
-});
+      for (const k in payload) {
+        if (!payload[k]) {
+          Swal.fire({ icon: "warning", title: "Field Required", text: "Please complete all required fields." });
+          return;
+        }
+      }
 
-    </script>
+      const phoneRegex = /^(?:\+62|62|0)8[1-9][0-9]{6,11}$/;
+      if (!phoneRegex.test(payload.mobile)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Phone Number",
+          text: "Enter a valid phone number (ex: 08xxx or +628xxx)."
+        });
+        return;
+      }
 
+      Swal.fire({
+        title: "Submitting...",
+        text: "Please wait while your attendance is being recorded.",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      fetch(WORKER_API_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+        .then(r => r.json())
+        .then(res => {
+          Swal.close();
+
+          if (res.status === "duplicate") {
+            Swal.fire({ icon: "warning", title: "Already Checked In", text: "Your attendance was already recorded." });
+            return;
+          }
+
+          if (res.status === "success") {
+            Swal.fire({
+              icon: "success",
+              title: "Attendance Recorded",
+              text: "Thank you for your participation!",
+              confirmButtonColor: "#28a745",
+              timer: 2500,
+              timerProgressBar: true
+            }).then(() => {
+              window.location.href = "https://www.icei.ac.id/";
+            });
+
+            document.getElementById("attendanceForm").reset();
+            document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
+            autofillEventFromURL(); // event readOnly tetap terisi
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Submission Failed",
+              text: res?.message ? String(res.message) : "Please try again later."
+            });
+          }
+        })
+        .catch(() => {
+          Swal.close();
+          Swal.fire({ icon: "error", title: "Submission Failed", text: "Please try again later." });
+        });
+    });
+
+    /************************************************************
+     * Init
+     ************************************************************/
+    document.getElementById("reloadAlamat").addEventListener("click", async () => {
+      try {
+        await setupAlamat();
+        Swal.fire({ icon: "success", title: "Alamat dimuat ulang", timer: 1200, showConfirmButton: false });
+      } catch (err) {
+        Swal.fire({ icon: "error", title: "Gagal memuat alamat", text: "Coba refresh halaman atau ganti jaringan." });
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      bindAlamatEvents();
+      try {
+        await setupAlamat();
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: "warning",
+          title: "Data alamat belum termuat",
+          text: "Silakan klik 'Muat ulang data alamat' atau refresh halaman."
+        });
+      }
+    });
+  </script>
 </body>
-
 </html>
