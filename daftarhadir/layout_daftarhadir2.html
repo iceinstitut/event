@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://iceinstitut.github.io/image/aset/favicon_icei.png" type="image/png">
     <title>Event ICE Institute -Daftar Hadir Event</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary-color: #ee1522;
@@ -21,26 +25,29 @@
             height: 100%;
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #ffffff;
+            overflow: hidden; /* Mencegah seluruh halaman scroll secara global */
+
         }
 
         .split-container {
             display: flex;
-            min-height: 100vh;
-            flex-wrap: wrap;
+            height: 100vh;
+            width: 100vw;
+            flex-wrap: nowrap;
         }
 
         /* Sisi Visual (Kiri) */
         .visual-side {
             background-color: var(--primary-color);
             color: white;
-            flex: 1;
-            min-width: 400px;
+            flex: 0 0 50%; /* Lebar tetap 400px */
             padding: 60px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            height: 100vh;
+            overflow: hidden; /* Sisi kiri sama sekali tidak boleh scroll */
             position: relative;
-            overflow: hidden;
         }
 
         /* Dekorasi latar belakang sisi kiri */
@@ -72,17 +79,19 @@
         /* Sisi Formulir (Kanan) */
         .form-side {
             flex: 1;
-            min-width: 400px;
             background: white;
+            height: 100vh;
+            overflow-y: auto; /* Hanya sisi kanan yang bisa scroll jika konten panjang */
             padding: 60px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
         .form-wrapper {
             width: 100%;
             max-width: 480px;
+            padding-bottom: 40px; /* Ruang ekstra di bawah agar tidak terpotong */
         }
 
         .form-wrapper h2 {
@@ -170,7 +179,20 @@
             box-shadow: 0 10px 20px rgba(238, 21, 34, 0.2);
         }
 
-        .gender-option{ cursor:pointer; border:2px solid transparent; transition:.2s; }
+        /* Custom scrollbar untuk sisi kanan */
+        .form-side::-webkit-scrollbar {
+            width: 6px;
+        }
+        .form-side::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .form-side::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+
+        .gender-option{ cursor:pointer; border:2px solid #f0f0f0; transition:.2s; }
         .gender-option:hover{ border-color:#ff4b4b; }
         .gender-option.selected{ border-color:#b70404; transform: scale(1.02); }
 
@@ -180,9 +202,11 @@
         .select2-selection__rendered { line-height: 36px !important; }
 
         @media (max-width: 991px) {
-            .visual-side { min-height: 40vh; padding: 40px; }
-            .form-side { padding: 40px 20px; }
-            .event-info h1 { font-size: 2.5rem; }
+            body, html { overflow: auto; }
+            .split-container { flex-direction: column; height: auto; }
+            .visual-side { flex: 0 0 auto; height: auto; min-height: 400px; padding: 40px; position: relative; }
+            .form-side { flex: 1; height: auto; padding: 40px 20px; overflow-y: visible; }
+
         }
     </style>
 </head>
@@ -193,7 +217,7 @@
     <section class="visual-side">
         <div class="event-info">
             <span class="badge bg-white text-danger mb-3 px-3 py-2 rounded-pill fw-bold">Live Event 2024</span>
-            <h1 id="eventTitle">Policy Dialogue: Embracing Digital Era with Micro-credential</h1>
+            <h1 id="eventTitle">Event Title</h1>
             <div class="event-details mt-4">
                 <p class="mb-1"><strong>Lokasi:</strong> Grand Ballroom Jakarta</p>
                 <p class="mb-0"><strong>Waktu:</strong> 09:00 - Selesai</p>
@@ -229,13 +253,13 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Alamat Email</label>
+                    <label class="form-label">Email Address</label>
                     <input type="email" class="form-control" placeholder="nama@email.com" id="email" required />
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" placeholder="Masukkan nama Anda" id="fullName" required />
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" placeholder="Enter your name" id="fullName" required />
                 </div>
 
                 <div class="mb-3">
@@ -256,7 +280,7 @@
                   <input type="text" class="form-control" id="occupation" placeholder="e.g. Student, Job Seeker, Homemaker, Entrepreneur, Freelancer, Teacher" required />
                 </div>
 
-                <div class="mb-3>
+                <div class="mb-3">
                   <label class="form-label">Institution</label>
                   <input type="text" class="form-control" id="institution" placeholder="e.g. Universitas Terbuka, Community, Independent" required />
                 </div>
@@ -303,8 +327,6 @@
 <!-- jQuery + Select2 -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- QRCode -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -313,15 +335,6 @@
  * CONFIG
  ************************************************************/
 const WORKER_API_BASE = "https://presensi.ice-institut.workers.dev/api";
-
-/************************************************************
- * QR Code
- ************************************************************/
-new QRCode(document.getElementById("qrcode"), {
-  text: window.location.href,
-  width: 150,
-  height: 150
-});
 
 /************************************************************
  * Gender picker
