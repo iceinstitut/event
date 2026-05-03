@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event ICE Institute -Daftar Hadir Event</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-color: #ee1522;
+            --secondary-dark: #1a1a1a;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+        }
+
+        .split-container {
+            display: flex;
+            min-height: 100vh;
+            flex-wrap: wrap;
+        }
+
+        /* Sisi Visual (Kiri) */
+        .visual-side {
+            background-color: var(--primary-color);
+            color: white;
+            flex: 1;
+            min-width: 400px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dekorasi latar belakang sisi kiri */
+        .visual-side::after {
+            content: "";
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .event-info h1 {
+            font-weight: 800;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .event-details {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            border-left: 3px solid rgba(255,255,255,0.3);
+            padding-left: 20px;
+        }
+
+        /* Sisi Formulir (Kanan) */
+        .form-side {
+            flex: 1;
+            min-width: 400px;
+            background: white;
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .form-wrapper h2 {
+            font-weight: 700;
+            color: var(--secondary-dark);
+            margin-bottom: 10px;
+        }
+
+        /* Logo Grid di Sisi Visual */
+        .logo-footer {
+            margin-top: 40px;
+        }
+
+        .logo-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0.7;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .box-logo {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .logo-org { width: 120px; height: 50px; background: white; color: var(--primary-color); }
+        .logo-prm { width: 90px; height: 40px; }
+        .logo-gld { width: 75px; height: 35px; }
+        .logo-slv { width: 60px; height: 30px; }
+
+        /* Form styling */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        .form-control {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
+            background-color: #fff;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #d1121c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(238, 21, 34, 0.2);
+        }
+
+        .gender-option{ cursor:pointer; border:2px solid transparent; transition:.2s; }
+        .gender-option:hover{ border-color:#ff4b4b; }
+        .gender-option.selected{ border-color:#b70404; transform: scale(1.02); }
+
+        /* Select2 mobile stability */
+        #attendanceForm .select2-container.select2-container { width: 100% !important; }
+        .select2-selection { min-height: 38px; }
+        .select2-selection__rendered { line-height: 36px !important; }
+
+        @media (max-width: 991px) {
+            .visual-side { min-height: 40vh; padding: 40px; }
+            .form-side { padding: 40px 20px; }
+            .event-info h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="split-container">
+    <!-- Kiri: Informasi & Branding -->
+    <section class="visual-side">
+        <div class="event-info">
+            <span class="badge bg-white text-danger mb-3 px-3 py-2 rounded-pill fw-bold">Live Event 2024</span>
+            <h1 id="eventTitle">Policy Dialogue: Embracing Digital Era with Micro-credential</h1>
+            <div class="event-details mt-4">
+                <p class="mb-1"><strong>Lokasi:</strong> Grand Ballroom Jakarta</p>
+                <p class="mb-0"><strong>Waktu:</strong> 09:00 - Selesai</p>
+            </div>
+        </div>
+
+        <div class="logo-footer">
+            <span class="logo-label text-white">Supported By</span>
+            <div class="logo-container">
+                <!-- Penyelenggara -->
+                <div class="box-logo logo-org">ORGANIZER</div>
+                <!-- Sponsors -->
+                <div class="box-logo logo-prm">PREMIUM</div>
+                <div class="box-logo logo-gld">GOLD</div>
+                <div class="box-logo logo-slv">SILVER</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kanan: Formulir -->
+    <section class="form-side">
+        <div class="form-wrapper">
+            <div class="mb-5">
+                <h2>Registrasi Kehadiran</h2>
+                <p class="text-muted">Lengkapi data Anda untuk memverifikasi kedatangan di lokasi acara.</p>
+            </div>
+
+            <form id="attendanceForm">
+                <div class="mb-3">
+                  <label class="form-label">Event</label>
+                  <input type="text" class="form-control" id="even" required />
+                  <div class="form-text" style="display: none;">Event akan terisi otomatis dari URL (?even=...)</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" class="form-control" placeholder="nama@email.com" id="email" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" placeholder="Masukkan nama Anda" id="fullName" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Gender</label>
+                  <div class="d-flex gap-3">
+                    <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Male" onclick="selectGender(this)">
+                      <div style="font-size:1.5rem; color:#02a3fe;"><i class="bi bi-gender-male me-2"></i><strong>Male</strong></div>
+                    </div>
+                    <div class="gender-option card flex-fill text-center p-3 rounded-4" data-value="Female" onclick="selectGender(this)">
+                      <div style="font-size:1.5rem; color:#ec49a6;"><i class="bi bi-gender-female me-2"></i><strong>Female</strong></div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="gender" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Occupation</label>
+                  <input type="text" class="form-control" id="occupation" placeholder="e.g. Student, Job Seeker, Homemaker, Entrepreneur, Freelancer, Teacher" required />
+                </div>
+
+                <div class="mb-3>
+                  <label class="form-label">Institution</label>
+                  <input type="text" class="form-control" id="institution" placeholder="e.g. Universitas Terbuka, Community, Independent" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Mobile Phone Number</label>
+                  <input type="tel" class="form-control" id="mobile" placeholder="Use international format (e.g. +628123456789)" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Country</label>
+                  <!-- Native select first; Select2 will enhance after data loaded -->
+                  <select id="country" class="form-select select-search" required></select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Province</label>
+                  <select id="province" class="form-select select-search" required></select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">City</label>
+                  <select id="city" class="form-select select-search" required></select>
+                </div>
+
+                <div class="col-12">
+                  <button type="button" id="reloadAlamat" class="btn btn-outline-danger btn-sm mt-2">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Reload address data
+                  </button>
+                  <div class="form-text text-muted">
+                    If the address dropdown is empty on your phone, click this button <b>Reload address data</b>or refresh the page.
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-submit">Submit Attendance</button>
+            </form>
+
+        </div>
+    </section>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery + Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- QRCode -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+/************************************************************
+ * CONFIG
+ ************************************************************/
+const WORKER_API_BASE = "https://presensi.ice-institut.workers.dev/api";
+
+/************************************************************
+ * QR Code
+ ************************************************************/
+new QRCode(document.getElementById("qrcode"), {
+  text: window.location.href,
+  width: 150,
+  height: 150
+});
+
+/************************************************************
+ * Gender picker
+ ************************************************************/
+function selectGender(el) {
+  document.querySelectorAll(".gender-option").forEach(o => o.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("gender").value = el.getAttribute("data-value");
+}
+
+/************************************************************
+ * Event from URL (?even=...)
+ ************************************************************/
+function getQueryParam(name) {
+  return new URLSearchParams(window.location.search).get(name) || "";
+}
+
+function autofillEventFromURL() {
+  const eventParam = getQueryParam("even");
+  if (!eventParam) return;
+
+  const eventInput = document.getElementById("even");
+  const decoded = decodeURIComponent(eventParam).replace(/_/g, " ");
+  eventInput.value = decoded;
+  eventInput.readOnly = true;
+
+  const eventTitle = document.getElementById("eventTitle");
+  if (eventTitle) eventTitle.innerText = decoded;
+}
+autofillEventFromURL();
+
+/************************************************************
+ * Fetch helpers: timeout + retry + JSON content-type guard
+ ************************************************************/
+async function fetchWithTimeout(url, opts = {}, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...opts, signal: controller.signal });
+  } finally {
+    clearTimeout(id);
+  }
+}
+
+async function fetchJSONWithRetry(url, retries = 2) {
+  let lastErr = null;
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const res = await fetchWithTimeout(url, { method: "GET" }, 12000);
+      const ct = (res.headers.get("content-type") || "").toLowerCase();
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!ct.includes("application/json")) {
+        const txt = await res.text();
+        throw new Error(`Non-JSON response: ${txt.slice(0, 100)}...`);
+      }
+      return await res.json();
+    } catch (err) {
+      lastErr = err;
+      await new Promise(r => setTimeout(r, 400 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+/************************************************************
+* Address: progressive enhancement (native first, Select2 later)
+************************************************************/
+let alamatData = [];
+let select2Ready = false;
+
+function uniqueSorted(arr) {
+return [...new Set(arr)].sort((a, b) => String(a).localeCompare(String(b)));
+}
+
+function fillSelectOptions(selectEl, list) {
+selectEl.innerHTML = `<option value=""></option>`;
+for (const v of list) {
+const opt = document.createElement("option");
+opt.value = v;
+opt.textContent = v;
+selectEl.appendChild(opt);
+}
+}
+
+function initSelect2Once() {
+if (select2Ready) return;
+select2Ready = true;
+
+try {
+$(".select-search").select2({
+  theme: "bootstrap4",
+  width: "100%",
+  placeholder: "Search…",
+  allowClear: true,
+  dropdownAutoWidth: true
+});
+
+// iOS/Android: fokus ke search field saat open
+$(document).on("select2:open", () => {
+  setTimeout(() => {
+    const el = document.querySelector(".select2-container--open .select2-search__field");
+    if (el) el.focus();
+  }, 50);
+});
+} catch (e) {
+// fallback tetap native select (tanpa search) kalau select2 gagal
+select2Ready = false;
+console.warn("Select2 init failed. Native select will be used.", e);
+}
+}
+
+// ✅ paling stabil di HP: destroy dulu, update option native, lalu init lagi
+function rebuildSelect2(id) {
+if (!select2Ready) return;
+const $el = $("#" + id);
+try {
+$el.select2("destroy");
+} catch (_) {}
+// init lagi hanya untuk elemen itu (lebih cepat dari init semua)
+try {
+$el.select2({
+  theme: "bootstrap4",
+  width: "100%",
+  placeholder: "Search…",
+  allowClear: true,
+  dropdownAutoWidth: true
+});
+} catch (e) {
+console.warn("Select2 rebuild failed for:", id, e);
+}
+}
+
+function getProvinces(country) {
+return uniqueSorted(
+alamatData.filter(x => x.country === country).map(x => x.province).filter(Boolean)
+);
+}
+
+function getCities(country, province) {
+return uniqueSorted(
+alamatData
+  .filter(x => x.country === country && x.province === province)
+  .map(x => x.city)
+  .filter(Boolean)
+);
+}
+
+function bindAlamatEvents() {
+const countryEl = document.getElementById("country");
+const provinceEl = document.getElementById("province");
+const cityEl = document.getElementById("city");
+
+async function onCountryChanged() {
+const country = countryEl.value;
+
+// reset province & city
+fillSelectOptions(provinceEl, []);
+fillSelectOptions(cityEl, []);
+provinceEl.disabled = true;
+cityEl.disabled = true;
+
+// reset values
+if (select2Ready) {
+  $("#province").val(null).trigger("change");
+  $("#city").val(null).trigger("change");
+} else {
+  provinceEl.value = "";
+  cityEl.value = "";
+}
+
+// kalau data belum siap, jangan lanjut
+if (!alamatData || alamatData.length === 0) {
+  console.warn("alamatData belum siap saat country berubah.");
+  return;
+}
+
+if (!country) {
+  rebuildSelect2("province");
+  rebuildSelect2("city");
+  return;
+}
+
+const provinces = getProvinces(country);
+fillSelectOptions(provinceEl, provinces);
+
+// ✅ enable province kalau ada data
+provinceEl.disabled = provinces.length === 0;
+
+// rebuild select2 untuk sinkron UI
+rebuildSelect2("province");
+rebuildSelect2("city");
+}
+
+async function onProvinceChanged() {
+const country = countryEl.value;
+const province = provinceEl.value;
+
+fillSelectOptions(cityEl, []);
+cityEl.disabled = true;
+
+if (select2Ready) {
+  $("#city").val(null).trigger("change");
+} else {
+  cityEl.value = "";
+}
+
+if (!alamatData || alamatData.length === 0) return;
+if (!country || !province) {
+  rebuildSelect2("city");
+  return;
+}
+
+const cities = getCities(country, province);
+fillSelectOptions(cityEl, cities);
+
+// ✅ enable city kalau ada data
+cityEl.disabled = cities.length === 0;
+
+rebuildSelect2("city");
+}
+
+// 1) Native DOM change (desktop & sebagian mobile)
+countryEl.addEventListener("change", onCountryChanged);
+provinceEl.addEventListener("change", onProvinceChanged);
+
+// 2) Select2 change (paling stabil)
+$(document).on("change", "#country", onCountryChanged);
+$(document).on("change", "#province", onProvinceChanged);
+}
+
+async function setupAlamat() {
+const countryEl = document.getElementById("country");
+const provinceEl = document.getElementById("province");
+const cityEl = document.getElementById("city");
+
+// Disable sementara
+countryEl.disabled = true;
+provinceEl.disabled = true;
+cityEl.disabled = true;
+
+fillSelectOptions(countryEl, []);
+fillSelectOptions(provinceEl, []);
+fillSelectOptions(cityEl, []);
+
+// ambil alamat dari worker (cache di edge)
+const json = await fetchJSONWithRetry(`${WORKER_API_BASE}?action=alamat`, 2);
+alamatData = Array.isArray(json) ? json : (json.data || []);
+
+if (!alamatData.length) throw new Error("Alamat data kosong.");
+
+// isi country options
+const countries = uniqueSorted(alamatData.map(x => x.country).filter(Boolean));
+fillSelectOptions(countryEl, countries);
+countryEl.disabled = false;
+
+// init select2 setelah opsi sudah terisi (penting)
+initSelect2Once();
+
+// kalau select2 aktif, rebuild country supaya sinkron (menghindari kasus HP blank)
+rebuildSelect2("country");
+rebuildSelect2("province");
+rebuildSelect2("city");
+}
+
+/************************************************************
+ * Custome Validation
+ ************************************************************/
+function isValidText(value, type = "general") {
+const cleaned = value.trim();
+
+if (cleaned.length < 3) return false;
+
+if (/^[^a-zA-Z]+$/.test(cleaned)) return false;
+if (/^\d+$/.test(cleaned)) return false;
+if (cleaned.length === 1) return false;
+
+if (type === "occupation") {
+if (cleaned.split(" ").length === 1 && cleaned.length <= 3) {
+  return false;
+}
+}
+
+return true;
+}
+
+function isValidPhone(value) {
+const cleaned = value.trim();
+
+// Hanya boleh angka dan optional + di depan
+if (!/^\+?\d+$/.test(cleaned)) return false;
+
+// Panjang 9 - 15 digit (tanpa +)
+const digits = cleaned.replace("+", "");
+if (digits.length < 9 || digits.length > 15) return false;
+
+return true;
+}
+
+document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+
+const occupationInput = document.getElementById("occupation");
+const institutionInput = document.getElementById("institution");
+const mobileInput = document.getElementById("mobile");
+
+const occupation = occupationInput.value;
+const institution = institutionInput.value;
+const mobile = mobileInput.value;
+
+if (!isValidText(occupation, "occupation")) {
+e.preventDefault();
+e.stopImmediatePropagation();
+
+Swal.fire({
+  icon: "warning",
+  title: "Invalid Occupation",
+  text: "Please enter your occupation/status (e.g. Student, Job Seeker, Homemaker, Entrepreneur, Freelancer, Teacher).",
+  confirmButtonColor: "#ee1522"
+});
+
+occupationInput.focus();
+return false;
+}
+
+if (!isValidText(institution, "institution")) {
+e.preventDefault();
+e.stopImmediatePropagation();
+
+Swal.fire({
+  icon: "warning",
+  title: "Invalid Institution",
+  text: "Please enter your affiliation (e.g. Universitas Terbuka, Community, Independent).",
+  confirmButtonColor: "#ee1522"
+});
+
+institutionInput.focus();
+return false;
+}
+
+if (!isValidPhone(mobile)) {
+e.preventDefault();
+e.stopImmediatePropagation();
+
+Swal.fire({
+  icon: "warning",
+  title: "Invalid Mobile Number",
+  text: "Please enter a valid phone number (9–15 digits, numbers only).",
+  confirmButtonColor: "#ee1522"
+});
+
+mobileInput.focus();
+return false;
+}
+
+});
+
+/************************************************************
+ * Submit attendance
+ ************************************************************/
+document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const payload = {
+    email: document.getElementById("email").value.trim(),
+    even: document.getElementById("even").value.trim(),
+    fullName: document.getElementById("fullName").value.trim(),
+    gender: document.getElementById("gender").value.trim(),
+    occupation: document.getElementById("occupation").value.trim(),
+    institution: document.getElementById("institution").value.trim(),
+    mobile: document.getElementById("mobile").value.trim(),
+    country: document.getElementById("country").value.trim(),
+    province: document.getElementById("province").value.trim(),
+    city: document.getElementById("city").value.trim()
+  };
+
+  for (const k in payload) {
+    if (!payload[k]) {
+      Swal.fire({ icon: "warning", title: "Field Required", text: "Please complete all required fields." });
+      return;
+    }
+  }
+
+  const phoneRegex = /^(?:\+62|62|0)8[1-9][0-9]{6,11}$/;
+  if (!phoneRegex.test(payload.mobile)) {
+    Swal.fire({
+      icon: "error",
+      title: "Invalid Phone Number",
+      text: "Enter a valid phone number (ex: 08xxx or +628xxx)."
+    });
+    return;
+  }
+
+  Swal.fire({
+    title: "Submitting...",
+    text: "Please wait while your attendance is being recorded.",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  fetch(WORKER_API_BASE, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+    .then(r => r.json())
+    .then(res => {
+      Swal.close();
+
+      if (res.status === "duplicate") {
+        Swal.fire({ icon: "warning", title: "Already Checked In", text: "Your attendance was already recorded." });
+        return;
+      }
+
+      if (res.status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "Attendance Recorded",
+          text: "Thank you for your participation!",
+          confirmButtonColor: "#28a745",
+          timer: 2500,
+          timerProgressBar: true
+        }).then(() => {
+          window.location.href = "https://www.icei.ac.id/";
+        });
+
+        document.getElementById("attendanceForm").reset();
+        document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
+        autofillEventFromURL(); // event readOnly tetap terisi
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Submission Failed",
+          text: res?.message ? String(res.message) : "Please try again later."
+        });
+      }
+    })
+    .catch(() => {
+      Swal.close();
+      Swal.fire({ icon: "error", title: "Submission Failed", text: "Please try again later." });
+    });
+});
+
+/************************************************************
+ * Init
+ ************************************************************/
+document.getElementById("reloadAlamat").addEventListener("click", async () => {
+  try {
+    await setupAlamat();
+    Swal.fire({ icon: "success", title: "Alamat dimuat ulang", timer: 1200, showConfirmButton: false });
+  } catch (err) {
+    Swal.fire({ icon: "error", title: "Gagal memuat alamat", text: "Coba refresh halaman atau ganti jaringan." });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  bindAlamatEvents();
+  try {
+    await setupAlamat();
+  } catch (err) {
+    console.error(err);
+    Swal.fire({
+      icon: "warning",
+      title: "Data alamat belum termuat",
+      text: "Silakan klik 'Muat ulang data alamat' atau refresh halaman."
+    });
+  }
+});
+</script>
+
+</body>
+</html>
