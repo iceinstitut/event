@@ -1,254 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: default
+title: Event ICE Institute - Attendance List
+---
+<style>
+:root {
+    --primary: #ee1522;
+    --primary-soft: rgba(238, 21, 34, 0.1);
+    --dark: #1a1a1a;
+    --grey: #7f8c8d;
+    --bg: #f0f2f5;
+}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="https://iceinstitut.github.io/image/aset/favicon_icei.png" type="image/png">
-  <title>Attendance List</title>
+body {
+    background: #f6f7fb;
+}
 
-    <script>
-        function loadComponent(id, url) {
-            fetch("https://iceinstitut.github.io/konten/" + url)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById(id).innerHTML = data;
-            });
-        }
+.card {
+    border-radius: 15px;
+}
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadComponent("header", "header.html");
-            loadComponent("footer", "footer.html");
-        });
+.card-body {
+    padding: 0px !important;
+}
 
-        fetch("https://iceinstitut.github.io/konten/head.html")
-        .then(response => response.text())
-        .then(data => {
-            const temp = document.createElement("div");
-            temp.innerHTML = data;
+.header-title {
+    font-size: 28px;
+    font-weight: 600;
+}
 
-            // Proses <link> langsung
-            temp.querySelectorAll("link").forEach(link => {
-                document.head.appendChild(link);
-            });
+#cardContainer {
+    transition: opacity .25s ease;
+}
 
-            // Proses <script> manual
-            temp.querySelectorAll("script").forEach(oldScript => {
-                const newScript = document.createElement("script");
-                newScript.src = oldScript.src;
-                if (oldScript.defer) newScript.defer = true;
-                document.head.appendChild(newScript);
-            });
-        });
-    </script>
+.attendance-card {
+    transition: transform 0.25s, box-shadow 0.25s;
+}
 
-  <style>
-    :root {
-            --primary: #ee1522;
-            --primary-soft: rgba(238, 21, 34, 0.1);
-            --dark: #1a1a1a;
-            --grey: #7f8c8d;
-            --bg: #f0f2f5;
-        }
-    body { background: #f6f7fb; }
-    .card { border-radius: 15px; }
-    .card-body { padding: 0px !important; }
-    .header-title { font-size: 28px; font-weight: 600; }
-    #cardContainer { transition: opacity .25s ease; }
-    .attendance-card { transition: transform 0.25s, box-shadow 0.25s; }
-    .attendance-card:hover { transform: translateY(-4px); box-shadow: 0 10px 16px rgba(0,0,0,0.12); }
+.attendance-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.12);
+}
 
-    .top-meta { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; align-items:center; }
-    .pill {
-      display:inline-flex; align-items:center; gap:8px;
-      background:#fff; border:1px solid rgba(0,0,0,.08);
-      padding:8px 12px; border-radius:999px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      font-size:14px;
+.top-meta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .08);
+    padding: 8px 12px;
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, .15);
+    border-top-color: rgba(0, 0, 0, .55);
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
-    .spinner {
-      width:16px; height:16px; border-radius:50%;
-      border:2px solid rgba(0,0,0,.15);
-      border-top-color: rgba(0,0,0,.55);
-      animation: spin .8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+}
 
-    .empty-state {
-      background:#fff; border:1px dashed rgba(0,0,0,.18);
-      border-radius:16px; padding:18px; text-align:center;
-      color:#6c757d;
-    }
-    .card-judul {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-    .timestamp {
-        font-size: 0.75rem;
-        color: #636e72;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .gender-tag {
-        position: absolute;
-        top: 24px;
-        right: 24px;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        padding: 4px 10px;
-        background: #fff0f1;
-        color: #ee1522;
-        border-radius: 20px;
-        font-weight: 700;
-    }
+.empty-state {
+    background: #fff;
+    border: 1px dashed rgba(0, 0, 0, .18);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    color: #6c757d;
+}
 
-    .info-list {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
+.card-judul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
 
-    .info-row {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
+.timestamp {
+    font-size: 0.75rem;
+    color: #636e72;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-    .icon-box {
-        width: 40px;
-        height: 40px;
-        background: var(--primary-soft);
-        color: var(--primary);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-    }
+.gender-tag {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    background: #fff0f1;
+    color: #ee1522;
+    border-radius: 20px;
+    font-weight: 700;
+}
 
-    .info-text p {
-        margin: 0;
-        font-size: 0.75rem;
-        color: var(--grey);
-    }
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
-    .info-text span {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--dark);
-    }
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-  </style>
-</head>
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
 
-<body style="background-color:#f6f7fb;">
-  <div id="header"></div>
+.info-text p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--grey);
+}
 
-  <div class="container py-5">
-    <h2 id="pageTitle" class="text-center mb-2 header-title">Attendance List</h2>
-    <p id="eventSubtitle" class="text-center text-muted mb-4" style="max-width:920px;margin:0 auto;">
-      Monitoring peserta berdasarkan event pada URL.
-    </p>
+.info-text span {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+</style>
 
-    <div class="text-center mb-4">
-      <div class="top-meta">
+<h2 id="pageTitle" class="text-center mb-2 header-title">Attendance List</h2>
+<p id="eventSubtitle" class="text-center text-muted mb-4" style="max-width:920px;margin:0 auto;">
+    Monitoring peserta berdasarkan event pada URL.
+</p>
+<div class="text-center mb-4">
+    <div class="top-meta">
         <div id="totalCount" class="pill text-muted">Total Participants: <b>0</b></div>
-
         <div id="lastUpdated" class="pill text-muted">
-          <span style="opacity:.7;">Last updated:</span> <span id="lastUpdatedText">-</span>
+            <span style="opacity:.7;">Last updated:</span> <span id="lastUpdatedText">-</span>
         </div>
-
         <button id="refreshBtn" class="btn btn-danger px-4">
-          <i class="me-2 bi bi-arrow-clockwise"></i>Refresh Data
+            <i class="me-2 bi bi-arrow-clockwise"></i>Refresh Data
         </button>
-
         <div id="loadingPill" class="pill text-muted" style="display:none;">
-          <span class="spinner" aria-hidden="true"></span>
-          <span>Loading…</span>
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Loading…</span>
         </div>
-      </div>
-
-      <div id="errorBox" class="mt-3" style="display:none;">
+    </div>
+    <div id="errorBox" class="mt-3" style="display:none;">
         <div class="alert alert-warning d-inline-flex align-items-center gap-2 mb-0" role="alert">
-          <i class="bi bi-exclamation-triangle"></i>
-          <span id="errorText">Failed to load data.</span>
+            <i class="bi bi-exclamation-triangle"></i>
+            <span id="errorText">Failed to load data.</span>
         </div>
-      </div>
     </div>
-
-    <div id="cardContainer" class="row g-4 justify-content-center">
-      <div class="col-12">
+</div>
+<div id="cardContainer" class="row g-4 justify-content-center">
+    <div class="col-12">
         <div class="empty-state">Loading data…</div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <div id="footer"></div>
+<script>
+/************************************************************
+ * CONFIG
+ * Worker domain Anda:
+ ************************************************************/
+const WORKER_API_BASE = "https://presensi.ice-institut.workers.dev/api";
+const AUTO_REFRESH_MS = 15000; // selaras dengan cache max-age di worker (mis. 15s)
 
-  <script>
-    /************************************************************
-     * CONFIG
-     * Worker domain Anda:
-     ************************************************************/
-    const WORKER_API_BASE = "https://presensi.ice-institut.workers.dev/api";
-    const AUTO_REFRESH_MS = 15000; // selaras dengan cache max-age di worker (mis. 15s)
+/************************************************************
+ * Helpers
+ ************************************************************/
+function getQueryParam(name) {
+    return new URLSearchParams(window.location.search).get(name) || "";
+}
 
-    /************************************************************
-     * Helpers
-     ************************************************************/
-    function getQueryParam(name) {
-      return new URLSearchParams(window.location.search).get(name) || "";
-    }
+function setLoading(isLoading) {
+    const container = document.getElementById("cardContainer");
+    const pill = document.getElementById("loadingPill");
+    container.style.opacity = isLoading ? "0.65" : "1";
+    pill.style.display = isLoading ? "inline-flex" : "none";
+}
 
-    function setLoading(isLoading) {
-      const container = document.getElementById("cardContainer");
-      const pill = document.getElementById("loadingPill");
-      container.style.opacity = isLoading ? "0.65" : "1";
-      pill.style.display = isLoading ? "inline-flex" : "none";
-    }
+function showError(msg) {
+    const box = document.getElementById("errorBox");
+    const text = document.getElementById("errorText");
+    text.textContent = msg || "Failed to load data.";
+    box.style.display = "block";
+}
 
-    function showError(msg) {
-      const box = document.getElementById("errorBox");
-      const text = document.getElementById("errorText");
-      text.textContent = msg || "Failed to load data.";
-      box.style.display = "block";
-    }
+function clearError() {
+    document.getElementById("errorBox").style.display = "none";
+}
 
-    function clearError() {
-      document.getElementById("errorBox").style.display = "none";
-    }
+function updateHeaderForEvent(even) {
+    const title = document.getElementById("pageTitle");
+    const subtitle = document.getElementById("eventSubtitle");
 
-    function updateHeaderForEvent(even) {
-      const title = document.getElementById("pageTitle");
-      const subtitle = document.getElementById("eventSubtitle");
-
-      if (!even) {
+    if (!even) {
         title.textContent = "Attendance List";
         subtitle.innerHTML = `Parameter <b>even</b> wajib ada di URL. Contoh: <code>?even=Nama%20Event</code>`;
         return;
-      }
-
-      title.textContent = "Attendance List";
-      subtitle.innerHTML = `Event: <b>${even}</b>`;
     }
 
-    function formatDateTime(d) {
-      try { return new Date(d).toLocaleString(); }
-      catch { return String(d); }
-    }
+    title.textContent = "Attendance List";
+    subtitle.innerHTML = `Event: <b>${even}</b>`;
+}
 
-    /************************************************************
-     * Render
-     ************************************************************/
-    function renderAttendance(data) {
-      const container = document.getElementById("cardContainer");
+function formatDateTime(d) {
+    try { return new Date(d).toLocaleString(); } catch { return String(d); }
+}
 
-      if (!Array.isArray(data) || data.length === 0) {
+/************************************************************
+ * Render
+ ************************************************************/
+function renderAttendance(data) {
+    const container = document.getElementById("cardContainer");
+
+    if (!Array.isArray(data) || data.length === 0) {
         container.innerHTML = `
           <div class="col-12">
             <div class="empty-state">
@@ -257,10 +249,10 @@
           </div>
         `;
         return;
-      }
+    }
 
-      let html = "";
-      data.forEach(item => {
+    let html = "";
+    data.forEach(item => {
         html += `
                 <div class="col-md-4">
                     <div class="card shadow-sm p-3 rounded-4 border-0 attendance-card h-100">
@@ -300,33 +292,33 @@
                     </div>
                 </div>
         `;
-      });
+    });
 
-      container.innerHTML = html;
-    }
+    container.innerHTML = html;
+}
 
-    /************************************************************
-     * Load data (filtered by event from URL)
-     ************************************************************/
-    async function loadData() {
-      const totalCount = document.getElementById("totalCount");
-      const lastUpdatedText = document.getElementById("lastUpdatedText");
+/************************************************************
+ * Load data (filtered by event from URL)
+ ************************************************************/
+async function loadData() {
+    const totalCount = document.getElementById("totalCount");
+    const lastUpdatedText = document.getElementById("lastUpdatedText");
 
-      const even = getQueryParam("even");
-      updateHeaderForEvent(even);
+    const even = getQueryParam("even");
+    updateHeaderForEvent(even);
 
-      if (!even) {
+    if (!even) {
         // stop render + tampilkan empty state jelas
         renderAttendance([]);
         totalCount.innerHTML = `Total Participants: <b>0</b>`;
         lastUpdatedText.textContent = "-";
         return;
-      }
+    }
 
-      clearError();
-      setLoading(true);
+    clearError();
+    setLoading(true);
 
-      try {
+    try {
         const apiURL = `${WORKER_API_BASE}?action=view&even=${encodeURIComponent(even)}`;
         const res = await fetch(apiURL, { method: "GET" });
         const json = await res.json();
@@ -342,50 +334,47 @@
         // full render (sesuai kebutuhan monitoring)
         renderAttendance(data);
 
-      } catch (err) {
+    } catch (err) {
         showError("Gagal memuat data. Coba Refresh atau cek koneksi/endpoint worker.");
-      } finally {
+    } finally {
         setLoading(false);
-      }
     }
+}
 
-    /************************************************************
-     * Auto refresh: pause saat tab tidak aktif
-     ************************************************************/
-    let intervalId = null;
+/************************************************************
+ * Auto refresh: pause saat tab tidak aktif
+ ************************************************************/
+let intervalId = null;
 
-    function startAutoRefresh() {
-      if (intervalId) return;
-      intervalId = setInterval(() => {
+function startAutoRefresh() {
+    if (intervalId) return;
+    intervalId = setInterval(() => {
         // hemat: jangan refresh kalau tab tidak terlihat
         if (document.visibilityState === "visible") loadData();
-      }, AUTO_REFRESH_MS);
-    }
+    }, AUTO_REFRESH_MS);
+}
 
-    function stopAutoRefresh() {
-      if (!intervalId) return;
-      clearInterval(intervalId);
-      intervalId = null;
-    }
+function stopAutoRefresh() {
+    if (!intervalId) return;
+    clearInterval(intervalId);
+    intervalId = null;
+}
 
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") {
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
         startAutoRefresh();
         loadData();
-      } else {
+    } else {
         stopAutoRefresh();
-      }
-    });
+    }
+});
 
-    // first load
-    document.addEventListener("DOMContentLoaded", () => {
-      loadData();
-      startAutoRefresh();
-    });
+// first load
+document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+    startAutoRefresh();
+});
 
-    // manual refresh
-    document.getElementById("refreshBtn").addEventListener("click", () => loadData());
-  </script>
-</body>
-
-</html>
+// manual refresh
+document.getElementById("refreshBtn").addEventListener("click", () => loadData());
+</script>
